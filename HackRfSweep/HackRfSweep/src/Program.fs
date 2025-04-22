@@ -14,8 +14,7 @@ type App() =
     override this.OnFrameworkInitializationCompleted() =
         // If we have a desktop lifetime, create and show our MainWindow
         match this.ApplicationLifetime with
-        | :? IClassicDesktopStyleApplicationLifetime as desktopLifetime ->
-            desktopLifetime.MainWindow <- MainWindow()
+        | :? IClassicDesktopStyleApplicationLifetime as desktopLifetime -> desktopLifetime.MainWindow <- MainWindow()
         | _ -> ()
 
         base.OnFrameworkInitializationCompleted()
@@ -24,7 +23,10 @@ module Main =
     [<STAThread>]
     [<EntryPoint>]
     let main args =
-        AppBuilder.Configure<App>()
-                  .UsePlatformDetect()
-                  .LogToTrace()
-                  .StartWithClassicDesktopLifetime args
+
+        SimpleLog.Log().addLogger (SimpleLog.FileLogger("HackRF Logger", Config.logPath ()))
+        SimpleLog.Log.logInfo "HackRF Sweep started"
+        SimpleLog.Log.logWarning "HackRF Sweep version 0.1.0"
+
+
+        AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace().StartWithClassicDesktopLifetime args

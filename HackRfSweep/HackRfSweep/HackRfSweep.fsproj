@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>HackRfSweep</RootNamespace>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RuntimeIdentifier)'=='win-x64'">
@@ -15,6 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="src/SimpleLog.fs" />
+    <Compile Include="src/Config.fs" />
     <Compile Include="src/MainWindow.fs" />
     <Compile Include="src/Program.fs" />
   </ItemGroup>
@@ -22,8 +26,10 @@
     <PackageReference Include="Avalonia" Version="11.2.8" />
     <PackageReference Include="Avalonia.Desktop" Version="11.2.8" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.8" />
+
     <PackageReference Include="ScottPlot" Version="5.0.55" />
     <PackageReference Include="ScottPlot.Avalonia" Version="5.0.55" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.116.1" Condition="'$(RuntimeIdentifier)'=='linux-x64'" />
   </ItemGroup>
 
 </Project>

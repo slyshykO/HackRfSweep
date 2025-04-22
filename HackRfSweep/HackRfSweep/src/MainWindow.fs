@@ -10,7 +10,7 @@ type MainWindow() as this =
 
     do
         // Basic window setup
-        this.Title <- "Avalonia F# Waterfall App"
+        this.Title <- "HackRF Sweep"
         this.Width <- 1200.0
         this.Height <- 800.0
 
