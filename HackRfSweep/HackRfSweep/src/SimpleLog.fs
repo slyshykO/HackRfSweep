@@ -87,9 +87,7 @@ type Log() =
             [<CallerLineNumber; Optional; DefaultParameterValue(-1)>] line: int,
             [<CallerFilePath; Optional; DefaultParameterValue("<unknown>")>] file: string
         ) =
-        if LogLevel.ToInt level >= LogLevel.ToInt instance_.logLevel then
-            let msg = Log.formatMsg (msg, level, line, file)
-            instance_.listOfLoggers |> Seq.iter (fun logger -> logger.write msg)
+        Log.logWrite (msg, level, line, file)
 
     static member inline logInfo
         (
