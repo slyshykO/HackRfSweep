@@ -24,7 +24,7 @@ module Main =
     [<EntryPoint>]
     let main args =
 
-        SimpleLog.Log().addLogger (SimpleLog.FileLogger("HackRF Logger", Config.logPath ()))
+        SimpleLog.Log.addLogger (SimpleLog.FileLogger("HackRF Logger", Config.logPath ()))
         SimpleLog.Log.logInfo "HackRF Sweep started"
         SimpleLog.Log.logWarning "HackRF Sweep version 0.1.0"
 

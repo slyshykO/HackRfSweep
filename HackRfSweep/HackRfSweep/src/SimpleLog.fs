@@ -57,7 +57,7 @@ type Log() =
 
     member _.listOfLoggers = listOfLoggers_
 
-    member _.addLogger(logger: ILog) = instance_.listOfLoggers.Add logger
+    static member addLogger(logger: ILog) = instance_.listOfLoggers.Add logger
 
     static member private formatMsg(msg: string, level: LogLevel, line: int, file: string) =
         let fileName =
