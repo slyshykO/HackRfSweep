@@ -29,19 +29,25 @@ module Config =
             ""
 
     let hackRfSweep =
-        let searchPath =
-            [ (envVar "HACKRF_DIR" |> Option.defaultValue (currentDirectory ())) ]
-            @ ConfigInternal.hackRfDirs
-            |> List.map (fun dir -> System.IO.Path.Combine(dir, hackRfSweepName))
+        try
+            let searchPath =
+                [ (envVar "HACKRF_DIR" |> Option.defaultValue (currentDirectory ())) ]
+                @ ConfigInternal.hackRfDirs
+                |> List.map (fun dir -> System.IO.Path.Combine(dir, hackRfSweepName))
 
-        searchPath |> List.find (fun path -> System.IO.File.Exists path)
+            searchPath |> List.find (fun path -> System.IO.File.Exists path)
+        with _ex ->
+            $"{hackRfSweepName} not found"
 
     let hackRfInfo =
-        let searchPath =
-            [ (envVar "HACKRF_DIR" |> Option.defaultValue (currentDirectory ())) ]
-            @ ConfigInternal.hackRfDirs
-            |> List.map (fun dir -> System.IO.Path.Combine(dir, hackRfInfoName))
+        try
+            let searchPath =
+                [ (envVar "HACKRF_DIR" |> Option.defaultValue (currentDirectory ())) ]
+                @ ConfigInternal.hackRfDirs
+                |> List.map (fun dir -> System.IO.Path.Combine(dir, hackRfInfoName))
 
-        searchPath |> List.find (fun path -> System.IO.File.Exists path)
+            searchPath |> List.find (fun path -> System.IO.File.Exists path)
+        with _ex ->
+            $"{hackRfInfoName} not found"
 
     let logPath () = "hackrf_sweep.log"
