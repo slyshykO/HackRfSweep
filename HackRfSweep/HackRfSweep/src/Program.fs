@@ -26,7 +26,13 @@ module Main =
 
         SimpleLog.Log.addLogger (SimpleLog.FileLogger("HackRF Logger", Config.logPath ()))
         SimpleLog.Log.logInfo "HackRF Sweep started"
-        SimpleLog.Log.logWarning "HackRF Sweep version 0.1.0"
 
+        let version =
+            Reflection.Assembly.GetExecutingAssembly().GetName().Version
+            |> Option.ofObj
+            |> Option.map (fun v -> v.ToString())
+            |> Option.defaultValue "Unknown"
+
+        SimpleLog.Log.logInfo $"HackRF Sweep version {version}"
 
         AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace().StartWithClassicDesktopLifetime args

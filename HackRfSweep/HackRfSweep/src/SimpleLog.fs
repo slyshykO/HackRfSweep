@@ -59,6 +59,10 @@ type Log() =
 
     static member addLogger(logger: ILog) = instance_.listOfLoggers.Add logger
 
+    static member removeLogger(loggerName: string) =
+        instance_.listOfLoggers.RemoveAll(fun logger -> logger.name () = loggerName)
+        |> ignore
+
     static member private formatMsg(msg: string, level: LogLevel, line: int, file: string) =
         let fileName =
             try
