@@ -33,7 +33,9 @@
 
     <PackageReference Include="ScottPlot" Version="5.0.55" />
     <PackageReference Include="ScottPlot.Avalonia" Version="5.0.55" />
+    
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" Condition="'$(RuntimeIdentifier)'=='linux-x64'" />
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
   </ItemGroup>
 
 </Project>
