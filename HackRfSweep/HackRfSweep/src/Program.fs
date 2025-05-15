@@ -27,6 +27,14 @@ module Main =
         SimpleLog.Log.addLogger (SimpleLog.FileLogger("HackRF Logger", Config.logPath ()))
         SimpleLog.Log.logInfo "HackRF Sweep started"
 
+        // Removed or replaced invalid SkiaSharp.SkiaSharpVersion reference
+        let skiaSharpVersion =
+            match Reflection.Assembly.Load("SkiaSharp").GetName().Version with
+            | null -> "Unknown"
+            | version -> version.ToString()
+
+        SimpleLog.Log.logInfo $"SkiaSharp version {skiaSharpVersion}"
+
         let version =
             Reflection.Assembly.GetExecutingAssembly().GetName().Version
             |> Option.ofObj
