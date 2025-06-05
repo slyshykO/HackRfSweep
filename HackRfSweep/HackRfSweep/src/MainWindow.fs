@@ -76,8 +76,8 @@ type MainWindow() as this =
 
     let mutable signalData: float[] = Array.empty
     let mutable heatmapData: float[,] = Array2D.zeroCreate 0 0
-    let mutable sigPlot: Plottables.SignalPlot option = None
-    let mutable heatPlot: Plottables.HeatmapPlot option = None
+    let mutable sigPlot: Plottables.Signal option = None
+    let mutable heatPlot: Plottables.Heatmap option = None
 
     do
         // Basic window setup
@@ -105,7 +105,7 @@ type MainWindow() as this =
 
         this.Content <- dockPanel
 
-        let handleSweep (data: HackRfProcess.SweepData) =
+        let handleSweep (data: SweepData) =
             Dispatcher.UIThread.Post(fun _ ->
                 signalData <- data.Magnitudes
 
