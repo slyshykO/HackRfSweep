@@ -1,6 +1,7 @@
 namespace HackRfSweep
 
 open Avalonia.Controls
+open Avalonia.Threading
 open ScottPlot
 open ScottPlot.Avalonia
 
@@ -75,6 +76,8 @@ type MainWindow() as this =
 
     let mutable signalData: float[] = Array.empty
     let mutable heatmapData: float[,] = Array2D.zeroCreate 0 0
+    let mutable sigPlot: Plottables.SignalPlot option = None
+    let mutable heatPlot: Plottables.HeatmapPlot option = None
 
     do
         // Basic window setup
@@ -87,24 +90,42 @@ type MainWindow() as this =
         let plot0 = avaloniaPlot.Multiplot.GetPlot 0
         let plot1 = avaloniaPlot.Multiplot.GetPlot 1
 
-        signalData <- Generate.Sin(1000)
+        signalData <- Array.create 1000 0.0
 
         let sig0 = plot0.Add.Signal(signalData)
         sig0.Axes.XAxis <- plot0.Axes.Top
+        sigPlot <- Some sig0
 
-        let pq = 10
-
-        let sin1000 = Generate.Sin(pq)
-        let cos1000 = Generate.Cos(pq)
-        heatmapData <- Array2D.zeroCreate 2 pq
-
-        //Utils.copySinToHeatmap sin1000 heatmapData
-        Utils.scrollDownAndInsert sin1000 heatmapData
-        Utils.scrollDownAndInsert cos1000 heatmapData
-
-        plot1.Add.Heatmap(heatmapData) |> ignore
+        let width = 256
+        heatmapData <- Array2D.zeroCreate 200 width
+        heatPlot <- Some(plot1.Add.Heatmap(heatmapData))
 
         DockPanel.SetDock(avaloniaPlot, Dock.Top)
         dockPanel.Children.Add(avaloniaPlot)
 
         this.Content <- dockPanel
+
+        let handleSweep (data: HackRfProcess.SweepData) =
+            Dispatcher.UIThread.Post(
+                fun _ ->
+                    signalData <- data.Magnitudes
+                    match sigPlot with
+                    | Some sp -> sp.Data <- signalData
+                    | None -> ()
+
+                    if heatmapData.GetLength 1 <> data.Magnitudes.Length then
+                        heatmapData <- Array2D.zeroCreate (heatmapData.GetLength 0) data.Magnitudes.Length
+                        match heatPlot with
+                        | Some hp -> hp.Data <- heatmapData
+                        | None -> ()
+
+                    Utils.scrollDownAndInsert data.Magnitudes heatmapData
+
+                    match heatPlot with
+                    | Some hp -> hp.Data <- heatmapData
+                    | None -> ()
+
+                    avaloniaPlot.Refresh()
+            )
+
+        HackRfProcess.start "" handleSweep

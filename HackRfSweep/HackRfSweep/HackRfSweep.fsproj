@@ -19,6 +19,7 @@
   <ItemGroup>
     <Compile Include="src/SimpleLog.fs" />
     <Compile Include="src/Config.fs" />
+    <Compile Include="src/HackRfProcess.fs" />
     <Compile Include="src/AppState.fs" />
     <Compile Include="src/MainWindow.fs" />
     <Compile Include="src/Program.fs" />
