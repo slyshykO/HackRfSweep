@@ -92,17 +92,24 @@ type MainWindow() as this =
         let sig0 = plot0.Add.Signal(signalData)
         sig0.Axes.XAxis <- plot0.Axes.Top
 
-        let pq = 10
+        let pq = 1000
 
         let sin1000 = Generate.Sin(pq)
         let cos1000 = Generate.Cos(pq)
-        heatmapData <- Array2D.zeroCreate 2 pq
+        heatmapData <- Array2D.zeroCreate 150 pq
 
         //Utils.copySinToHeatmap sin1000 heatmapData
-        Utils.scrollDownAndInsert sin1000 heatmapData
-        Utils.scrollDownAndInsert cos1000 heatmapData
+        //Utils.scrollDownAndInsert sin1000 heatmapData
+        //Utils.scrollDownAndInsert cos1000 heatmapData
+        for i in 0 .. heatmapData.GetLength 0 - 1 do
+            if i % 2 = 0 then
+                Utils.scrollDownAndInsert cos1000 heatmapData
+            else
+                Utils.scrollDownAndInsert sin1000 heatmapData
+
 
         plot1.Add.Heatmap(heatmapData) |> ignore
+        plot1.Axes.SetLimitsY(AxisLimits(0.0, 150.0, 150.0, 0.0))
 
         DockPanel.SetDock(avaloniaPlot, Dock.Top)
         dockPanel.Children.Add(avaloniaPlot)

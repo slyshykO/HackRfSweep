@@ -42,14 +42,12 @@ type LogLevel =
         | _ -> None
 
 
-
 type Log() =
 
     static let mutable instance_: Log = Log()
 
     let listOfLoggers_ = ResizeArray<ILog>()
     let mutable logLevel_ = LogLevel.Info
-
 
     member _.logLevel
         with get () = logLevel_
@@ -82,7 +80,6 @@ type Log() =
         if LogLevel.ToInt level >= LogLevel.ToInt instance_.logLevel then
             let msg = Log.formatMsg (msg, level, line, file)
             instance_.listOfLoggers |> Seq.iter (fun logger -> logger.write msg)
-
 
     static member log
         (
@@ -129,7 +126,6 @@ type Log() =
 type FileLogger(name: string, fileName: string) =
     let fileName_ = fileName
     let name_ = name
-
 
     interface ILog with
         member _.write(msg: string) =
