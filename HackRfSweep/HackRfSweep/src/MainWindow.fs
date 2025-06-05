@@ -105,27 +105,27 @@ type MainWindow() as this =
 
         this.Content <- dockPanel
 
-        let handleSweep (data: SweepData) =
-            Dispatcher.UIThread.Post(fun _ ->
-                signalData <- data.Magnitudes
+// let handleSweep (data: SweepData) =
+//     Dispatcher.UIThread.Post(fun _ ->
+//         signalData <- data.Magnitudes
 
-                match sigPlot with
-                | Some sp -> sp.Data <- signalData
-                | None -> ()
+//         match sigPlot with
+//         | Some sp -> sp.Data <- signalData
+//         | None -> ()
 
-                if heatmapData.GetLength 1 <> data.Magnitudes.Length then
-                    heatmapData <- Array2D.zeroCreate (heatmapData.GetLength 0) data.Magnitudes.Length
+//         if heatmapData.GetLength 1 <> data.Magnitudes.Length then
+//             heatmapData <- Array2D.zeroCreate (heatmapData.GetLength 0) data.Magnitudes.Length
 
-                    match heatPlot with
-                    | Some hp -> hp.Data <- heatmapData
-                    | None -> ()
+//             match heatPlot with
+//             | Some hp -> hp.Data <- heatmapData
+//             | None -> ()
 
-                Utils.scrollDownAndInsert data.Magnitudes heatmapData
+//         Utils.scrollDownAndInsert data.Magnitudes heatmapData
 
-                match heatPlot with
-                | Some hp -> hp.Data <- heatmapData
-                | None -> ()
+//         match heatPlot with
+//         | Some hp -> hp.Data <- heatmapData
+//         | None -> ()
 
-                avaloniaPlot.Refresh())
+//         avaloniaPlot.Refresh())
 
-        HackRfProcess.start "" handleSweep
+// HackRfProcess.start "" handleSweep
