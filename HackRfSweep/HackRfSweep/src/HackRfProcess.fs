@@ -18,30 +18,38 @@ module HackRfProcess =
 
     /// Parse one line of hackrf_sweep CSV output
     let private parseLine (line: string) : SweepData option =
-        let parts = line.Split([|','|], StringSplitOptions.RemoveEmptyEntries)
+        let parts = line.Split([| ',' |], StringSplitOptions.RemoveEmptyEntries)
+
         if parts.Length < 6 then
             None
         else
             match tryParseFloat parts.[2], tryParseFloat parts.[3], tryParseFloat parts.[4] with
             | Some startFreq, Some endFreq, Some step ->
-                let magnitudes =
-                    parts
-                    |> Array.skip 5
-                    |> Array.choose tryParseFloat
+                let magnitudes = parts |> Array.skip 5 |> Array.choose tryParseFloat
 
                 if magnitudes.Length = 0 then
                     None
                 else
                     let count = magnitudes.Length
-                    let freqStep = if step > 0.0 then step else (endFreq - startFreq) / float count
+
+                    let freqStep =
+                        if step > 0.0 then
+                            step
+                        else
+                            (endFreq - startFreq) / float count
+
                     let freqs = Array.init count (fun i -> startFreq + freqStep * float i)
-                    Some { Frequencies = freqs; Magnitudes = magnitudes }
+
+                    Some
+                        { Frequencies = freqs
+                          Magnitudes = magnitudes }
             | _ -> None
 
     /// Start hackrf_sweep and stream parsed data to the callback
     let start (arguments: string) (onData: SweepData -> unit) =
         async {
             let exe = Config.hackRfSweep
+
             if not (IO.File.Exists exe) then
                 SimpleLog.Log.logError ($"hackrf_sweep not found: {exe}")
             else
@@ -52,14 +60,23 @@ module HackRfProcess =
 
                 use proc = new Process()
                 proc.StartInfo <- psi
+
                 try
                     proc.Start() |> ignore
                     use output = proc.StandardOutput
+
                     while not output.EndOfStream do
                         let! line = output.ReadLineAsync() |> Async.AwaitTask
+
+                        let line =
+                            match line with
+                            | null -> ""
+                            | l -> l.Trim()
+
                         match parseLine line with
                         | Some data -> onData data
                         | None -> ()
                 with ex ->
                     SimpleLog.Log.logError ($"hackrf_sweep failed: {ex.Message}")
-        } |> Async.Start
+        }
+        |> Async.Start
