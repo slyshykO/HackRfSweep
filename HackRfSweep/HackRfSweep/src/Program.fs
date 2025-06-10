@@ -30,7 +30,10 @@ module Main =
         // Look up the SkiaSharp version and fall back to "Unknown" on failure
         let skiaSharpVersion =
             try
-                Reflection.Assembly.Load("SkiaSharp").GetName().Version.ToString()
+                Reflection.Assembly.Load("SkiaSharp").GetName().Version
+                |> Option.ofObj
+                |> Option.map (fun v -> v.ToString())
+                |> Option.defaultValue "Unknown"
             with _ ->
                 "Unknown"
 
