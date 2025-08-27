@@ -64,7 +64,9 @@ type Log() =
     static member private formatMsg(msg: string, level: LogLevel, line: int, file: string) =
         let fileName =
             try
-                System.IO.Path.GetFileName file |> Option.ofObj |> Option.defaultValue file
+                System.IO.Path.GetFileName file
+                |> ValueOption.ofObj
+                |> ValueOption.defaultValue file
             with _ ->
                 file
 
