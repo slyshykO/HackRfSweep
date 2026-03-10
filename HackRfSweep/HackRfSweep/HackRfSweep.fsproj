@@ -28,15 +28,15 @@
   <ItemGroup>
     <PackageReference Include="GitInfo" Version="3.6.0" />
 
-    <PackageReference Include="Avalonia" Version="11.3.8" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.8" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.8" />
+    <PackageReference Include="Avalonia" Version="11.3.12" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
 
     <PackageReference Include="ScottPlot" Version="5.1.57" />
     <PackageReference Include="ScottPlot.Avalonia" Version="5.1.57" />
     
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.1" Condition="'$(RuntimeIdentifier)'=='linux-x64'" />
-    <PackageReference Include="SkiaSharp" Version="3.119.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.2" Condition="'$(RuntimeIdentifier)'=='linux-x64'" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
   </ItemGroup>
 
 </Project>
